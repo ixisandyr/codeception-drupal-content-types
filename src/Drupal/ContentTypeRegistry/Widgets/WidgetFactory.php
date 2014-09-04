@@ -9,18 +9,20 @@
 namespace Codeception\Module\Drupal\ContentTypeRegistry\Widgets;
 
 
-class WidgetFactory {
+use Codeception\Module\Drupal\ContentTypeRegistry\Fields\Field;
 
-    public static function create($type)
+class WidgetFactory
+{
+    public static function create(Field $field, $lang = "und", $pos = 0)
     {
-        switch ($type)
+        switch ($field->getWidget())
         {
             case "ckeditor":
-
+                return new CkEditor($field, $lang, $pos);
                 break;
 
             default:
-                return new Text();
+                return new Text($field, $lang, $pos);
         }
     }
 }

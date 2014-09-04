@@ -9,16 +9,10 @@
 namespace Codeception\Module\Drupal\ContentTypeRegistry\Widgets;
 
 use Codeception\Actor;
+use Codeception\Module\Drupal\ContentTypeRegistry\Fields\Field;
 
 abstract class Widget
 {
-    /**
-     * The actor.
-     *
-     * @var \Codeception\Actor
-     */
-    protected $I;
-
     /**
      * @var string
      *   The field name e.g. body, field_group, etc.
@@ -26,38 +20,21 @@ abstract class Widget
     protected $fieldName;
 
     /**
-     * @param Actor $I
      * @param $name
      * @param $lang
      * @param $pos
      */
-    public function __construct(Actor $I, $name, $lang = "und", $pos = 0)
+    public function __construct(Field $field, $lang = "und", $pos = 0)
     {
-        $this->I = $I;
-        $this->fieldName = $name;
+        $this->field = $field;
         $this->lang = $lang;
         $this->pos = 0;
     }
 
-    public function getFormFieldName()
+    public function getFormFieldSelector()
     {
-        return sprintf(
-            "%s[%s][%d][value]",
-            $this->lang,
-            str_replace("_", "-", strtolower($this->fieldName)),
-            $this->pos
-        );
+        return $this->field->getSelector();
     }
 
-    public function getFormItemSelector()
-    {
-        return sprintf(
-            ".form-item-%s-%s-%d-value",
-            str_replace("_", "-", strtolower($this->fieldName)),
-            $this->lang,
-            $this->pos
-        );
-    }
-
-    abstract public function fill($value);
+    abstract public function fill(Actor $I, $value);
 }

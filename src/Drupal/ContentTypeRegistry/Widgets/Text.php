@@ -9,12 +9,12 @@
 namespace Codeception\Module\Drupal\ContentTypeRegistry\Widgets;
 
 
-use Codeception\TestCase\Shared\Actor;
+use Codeception\Actor;
 
 class Text extends Widget
 {
-    public function fill($value)
+    public function fill(Actor $I, $value)
     {
-        $this->I->fillField($this->name, $value);
+        $I->fillField($this->getFormFieldSelector(), $value);
     }
 }

@@ -42,7 +42,7 @@ class DrupalContentTypeRegistry extends Module
      */
     public function initializeContentTypes(ContentTypeRegistryStorageInterface $storage)
     {
-        $this->$storage = $storage;
+        $this->storage = $storage;
     }
 
     /**

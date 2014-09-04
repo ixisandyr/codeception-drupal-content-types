@@ -7,6 +7,8 @@
 namespace Codeception\Module\Drupal\ContentTypeRegistry\Fields;
 
 use Codeception\Exception\Configuration as ConfigurationException;
+use Codeception\Module\Drupal\ContentTypeRegistry\Widgets\Widget;
+use Codeception\Module\Drupal\ContentTypeRegistry\Widgets\WidgetFactory;
 
 /**
  * Class Field
@@ -49,6 +51,12 @@ class Field
      * @var string
      */
     protected $widget;
+
+    /**
+     * @var Widget
+     *   Widget object that knows how to fill Drupal widgets.
+     */
+    protected $widgetObject;
 
     /**
      * True if mandatory when creating/editing a node. False otherwise.
@@ -188,6 +196,13 @@ class Field
     public function setWidget($widget)
     {
         $this->widget = $widget;
+    }
+
+    public function getWidgetObject()
+    {
+        return WidgetFactory::create(
+            $this
+        );
     }
 
     /**

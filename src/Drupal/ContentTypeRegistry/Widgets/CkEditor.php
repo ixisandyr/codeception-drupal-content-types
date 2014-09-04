@@ -9,13 +9,13 @@
 namespace Codeception\Module\Drupal\ContentTypeRegistry\Widgets;
 
 
+use Codeception\Actor;
+
 class CkEditor extends Widget
 {
-    public function fill($value)
+    public function fill(Actor $I, $value)
     {
-        $I = $this->I;
-
-        $sel = $this->getFormItemSelector("und", 0);
+        $sel = $this->getFormItemSelector();
 
         if (!($name = $I->grabAttributeFrom("$sel iframe", "name"))) {
             $name = uniqid();
@@ -27,5 +27,15 @@ class CkEditor extends Widget
         //$I->executeJS("window.parent.jQuery('body').html('foo bar')");
         $I->see($value, "body");
         $I->switchToIframe();
+    }
+
+    protected function getFormItemSelector()
+    {
+        return sprintf(
+            ".form-item-%s-%s-%d-value",
+            str_replace("_", "-", strtolower($this->field->getMachine())),
+            $this->lang,
+            $this->pos
+        );
     }
 }
