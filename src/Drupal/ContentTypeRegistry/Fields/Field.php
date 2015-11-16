@@ -7,6 +7,7 @@
 namespace Codeception\Module\Drupal\ContentTypeRegistry\Fields;
 
 use Codeception\Exception\Configuration as ConfigurationException;
+use Codeception\Exception\Configuration;
 use Codeception\Lib\Interfaces\Web;
 use Codeception\Module\Drupal\ContentTypeRegistry\Widgets\Widget;
 
@@ -329,6 +330,14 @@ class Field
             }
         }
         if (isset($yaml['selector'])) {
+            if (!$field->getWidget()) {
+                throw new Configuration(
+                    sprintf(
+                        "Field must specify widget if selector is used: %s",
+                        var_export($yaml, true)
+                    )
+                );
+            }
             $field->getWidget()->setSelector($yaml['selector']);
         }
         if (isset($yaml['required']) && $yaml['required'] != 'false') {
